@@ -48,7 +48,13 @@ const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
   return (
-    <TabOneStack.Navigator>
+    <TabOneStack.Navigator
+      screenOptions={{
+        headerStyle:{
+          backgroundColor:'#f4511e'
+        }
+      }}
+    >
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
@@ -62,7 +68,13 @@ const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
 function TabTwoNavigator() {
   return (
-    <TabTwoStack.Navigator>
+    <TabTwoStack.Navigator
+      screenOptions={{
+        headerStyle:{
+          backgroundColor:'#f4511e'
+        }
+      }}
+    >
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
