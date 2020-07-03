@@ -1,14 +1,32 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StackScreenProps } from "@react-navigation/stack";
+import * as React from "react";
+import { StyleSheet } from "react-native";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import EditScreenInfo from "../components/EditScreenInfo";
+import { Text, View, Button } from "../components/Themed";
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import { RootStackParamList } from "../types";
 
-export default function TabOneScreen() {
+export default function TabOneScreen({
+  navigation,
+}: StackScreenProps<RootStackParamList>): JSX.Element {
+  const colorScheme = useColorScheme();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>salam</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Button
+        title="click me"
+        color={Colors[colorScheme].button}
+        onPress={() => {
+          navigation.setOptions({ headerTitle: "updete" });
+        }}
+      />
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
     </View>
   );
@@ -16,17 +34,17 @@ export default function TabOneScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: "center",
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+  },
+  separator: {
+    height: 2,
+    marginVertical: 30,
+    width: "80%",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    fontWeight: "bold",
   },
 });
