@@ -1,0 +1,9 @@
+{
+    "extends": "react-native-typescript",
+    "rules": {
+        "no-console": 2,
+        "react/display-name": [0, { "ignoreTranspilerName": true }],
+        "react-native/no-inline-styles": 0,
+        "sort-keys":[0]
+      }
+}
