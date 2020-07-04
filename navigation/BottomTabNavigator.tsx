@@ -12,9 +12,25 @@ import { Navigator } from "../components";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
+const NavigatorOne = () => {
+  const count = useSelector((state: any) => state.count);
+  return (
+    <Navigator name="TabOneScreen" component={TabOneScreen} title={count} />
+  );
+};
+const NavigatorTwo = () => {
+  // const count = useSelector((state: any) => state.count);
+  return (
+    <Navigator
+      name="TabTwoScreen"
+      component={TabTwoScreen}
+      title="Tab Two Title"
+    />
+  );
+};
+
 export default function BottomTabNavigator(): JSX.Element {
   const colorScheme = useColorScheme();
-  const count = useSelector((state: any) => state.count);
 
   return (
     <BottomTab.Navigator
@@ -26,13 +42,7 @@ export default function BottomTabNavigator(): JSX.Element {
       {/* Tab 1 */}
       <BottomTab.Screen
         name="TabOne"
-        component={() => (
-          <Navigator
-            name="TabOneScreen"
-            component={TabOneScreen}
-            title={count}
-          />
-        )}
+        component={NavigatorOne}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-code" color={color} />
@@ -43,13 +53,7 @@ export default function BottomTabNavigator(): JSX.Element {
       {/* Tab 2 */}
       <BottomTab.Screen
         name="TabTwo"
-        component={() => (
-          <Navigator
-            name="TabTwoScreen"
-            component={TabTwoScreen}
-            title="Tab Two Title"
-          />
-        )}
+        component={NavigatorTwo}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-code" color={color} />
