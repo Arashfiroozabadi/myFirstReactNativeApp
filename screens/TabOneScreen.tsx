@@ -1,5 +1,6 @@
-import { StackScreenProps } from "@react-navigation/stack";
 import * as React from "react";
+import { StackScreenProps } from "@react-navigation/stack";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
@@ -8,18 +9,25 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import { RootStackParamList } from "../types";
 
-export default function TabOneScreen({
+function TabOneScreen({
   navigation,
 }: StackScreenProps<RootStackParamList>): JSX.Element {
   const colorScheme = useColorScheme();
+  const theme = useSelector((state: any) => state.theme);
+  const count = useSelector((state: any) => state.count);
+
+  const dispatch = useDispatch();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>salam</Text>
+      <Text style={styles.title}>{theme}</Text>
       <Button
         title="click me"
         color={Colors[colorScheme].button}
         onPress={() => {
-          navigation.setOptions({ headerTitle: "updete" });
+          dispatch({ type: "INCREMENT" });
+          dispatch({ type: "light" });
+          navigation.setOptions({ title: count });
         }}
       />
       <View
@@ -31,6 +39,8 @@ export default function TabOneScreen({
     </View>
   );
 }
+
+export default connect((state: any) => ({ count: state.count }))(TabOneScreen);
 
 const styles = StyleSheet.create({
   container: {
