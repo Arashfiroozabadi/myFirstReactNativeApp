@@ -1,9 +1,11 @@
 {
     "extends": "react-native-typescript",
     "rules": {
-        "no-console": 2,
-        "react/display-name": [0, { "ignoreTranspilerName": true }],
-        "react-native/no-inline-styles": 0,
-        "sort-keys":[0]
-      }
+      "sort-keys":[0],
+      "no-console": 2,
+      "react/display-name": [0, { "ignoreTranspilerName": true }],
+      "react-native/no-inline-styles": 0,
+      "import-order-alphabetical/order": "off",
+      "@typescript-eslint/no-explicit-any":["off", { "ignoreRestArgs": true }]
+    }
 }
