@@ -1,18 +1,33 @@
 import * as React from "react";
+import { Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import { Text, Button } from "./Themed";
+import { Button } from "./Themed";
 
 type TabParamList = {
-  TabOneScreen: undefined;
-  TabTwoScreen: undefined;
+  TabHomeScreen: undefined;
+  TabProfileScreen: undefined;
+  TabSearchScreen: undefined;
 };
 
 type Props = {
   component: React.ComponentType<any>;
-  name: "TabOneScreen" | "TabTwoScreen";
-  title?: string;
+  name: "TabHomeScreen" | "TabProfileScreen" | "TabSearchScreen";
+  title?: any;
+};
+const uri =
+  "https://scontent-ort2-1.cdninstagram.com/v/t51.2885-19/s150x150/41187899_505114266565984_455469324551847936_n.jpg?_nc_ht=scontent-ort2-1.cdninstagram.com&_nc_ohc=YY_ILdBodSAAX-lfIIV&oh=ae4646ec39571af2b5baa833554a848c&oe=5F2D776B";
+
+const Avatar = (): JSX.Element => {
+  return (
+    <Image
+      style={{ width: 50, height: 50 }}
+      source={{
+        uri: uri,
+      }}
+    />
+  );
 };
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -29,7 +44,7 @@ function Navigator(props: Props): JSX.Element {
         name={name}
         options={{
           // headerTitle: (props) => <Text>test</Text>,
-          title: title,
+          headerTitle: (props: any) => <Avatar {...props} />,
           headerRight: () => (
             <Button
               onPress={() => alert("This is a button!")}

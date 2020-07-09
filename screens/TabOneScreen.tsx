@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { StyleSheet } from "react-native";
@@ -17,6 +18,15 @@ function TabOneScreen({
   const count = useSelector((state: any) => state.count);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log("test");
+
+    return () => {
+      null;
+    };
+  }, []);
 
   return (
     <View style={styles.container}>

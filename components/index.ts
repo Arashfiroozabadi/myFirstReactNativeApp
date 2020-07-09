@@ -1,1 +1,2 @@
 export { default as Navigator } from "./Navigator";
+export { BaseButton } from "./Themed";

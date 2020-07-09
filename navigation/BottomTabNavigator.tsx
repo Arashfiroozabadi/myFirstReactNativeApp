@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useSelector } from "react-redux";
 
@@ -9,24 +10,25 @@ import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import { BottomTabParamList } from "../types";
 import { Navigator } from "../components";
+import Search from "../screens/SearchScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-const NavigatorOne = () => {
+const NavigatorOne = (): JSX.Element => {
   const count = useSelector((state: any) => state.count);
   return (
-    <Navigator name="TabOneScreen" component={TabOneScreen} title={count} />
+    <Navigator name="TabHomeScreen" component={TabOneScreen} title={count} />
   );
 };
-const NavigatorTwo = () => {
+
+const NavigatorTwo = (): JSX.Element => {
   // const count = useSelector((state: any) => state.count);
-  return (
-    <Navigator
-      name="TabTwoScreen"
-      component={TabTwoScreen}
-      title="Tab Two Title"
-    />
-  );
+  return <Navigator name="TabProfileScreen" component={TabTwoScreen} />;
+};
+
+const NavigatorSearch = (): JSX.Element => {
+  // const count = useSelector((state: any) => state.count);
+  return <Navigator name="TabSearchScreen" component={Search} />;
 };
 
 export default function BottomTabNavigator(): JSX.Element {
@@ -34,14 +36,14 @@ export default function BottomTabNavigator(): JSX.Element {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: Colors[colorScheme].tint,
       }}
     >
-      {/* Tab 1 */}
+      {/* Tab Home */}
       <BottomTab.Screen
-        name="TabOne"
+        name="Home"
         component={NavigatorOne}
         options={{
           tabBarIcon: ({ color }) => (
@@ -52,7 +54,7 @@ export default function BottomTabNavigator(): JSX.Element {
 
       {/* Tab 2 */}
       <BottomTab.Screen
-        name="TabTwo"
+        name="Profile"
         component={NavigatorTwo}
         options={{
           tabBarIcon: ({ color }) => (
@@ -60,6 +62,19 @@ export default function BottomTabNavigator(): JSX.Element {
           ),
         }}
       />
+
+      {/* Tab Search */}
+      <BottomTab.Screen
+        name="Search"
+        component={NavigatorSearch}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-code" color={color} />
+          ),
+        }}
+      />
+
+      {/* ...other */}
     </BottomTab.Navigator>
   );
 }
