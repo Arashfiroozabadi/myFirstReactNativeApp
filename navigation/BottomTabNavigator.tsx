@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Ionicons } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useSelector } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -47,7 +47,7 @@ export default function BottomTabNavigator(): JSX.Element {
         component={NavigatorOne}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="md-home" color={color} />
           ),
         }}
       />
@@ -58,7 +58,7 @@ export default function BottomTabNavigator(): JSX.Element {
         component={NavigatorTwo}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="md-contact" color={color} />
           ),
         }}
       />
@@ -69,7 +69,7 @@ export default function BottomTabNavigator(): JSX.Element {
         component={NavigatorSearch}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="ios-search" color={color} />
           ),
         }}
       />
