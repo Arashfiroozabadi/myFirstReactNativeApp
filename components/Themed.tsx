@@ -5,7 +5,11 @@ import {
   Button as DefaultButton,
 } from "react-native";
 
-import { Button as TestButton } from "native-base";
+import {
+  Button as TestButton,
+  Icon as DefaultIcon,
+  Input as DefaultInput,
+} from "native-base";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -34,6 +38,8 @@ export type TextProps = ThemeProps & DefaultText["props"];
 export type ViewProps = ThemeProps & DefaultView["props"];
 export type ButtonProps = ThemeProps & DefaultButton["props"];
 export type TestProps = ThemeProps & TestButton["props"];
+export type IconProps = ThemeProps & DefaultIcon["props"];
+export type InputProps = ThemeProps & DefaultInput["props"];
 
 export function Text(props: TextProps): JSX.Element {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -63,8 +69,33 @@ export function BaseButton(props: TestProps): JSX.Element {
   const colorScheme = useColorScheme();
   switch (colorScheme) {
     case "dark":
-      return <TestButton dark {...props} />;
+      return <TestButton style={{ padding: 10 }} dark {...props} />;
     default:
-      return <TestButton light {...props} />;
+      return <TestButton style={{ padding: 10 }} light {...props} />;
   }
+}
+
+export function IconBase(props: IconProps): JSX.Element {
+  const colorScheme = useColorScheme();
+  return (
+    <DefaultIcon
+      style={{
+        color: Colors[colorScheme].icons,
+      }}
+      {...props}
+    />
+  );
+}
+
+export function InputBase(props: InputProps): JSX.Element {
+  const colorScheme = useColorScheme();
+  return (
+    <DefaultInput
+      style={{
+        color: Colors[colorScheme].text,
+      }}
+      placeholderTextColor={Colors[colorScheme].placeholder}
+      {...props}
+    />
+  );
 }
