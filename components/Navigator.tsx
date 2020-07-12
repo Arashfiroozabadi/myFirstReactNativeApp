@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Image } from "react-native";
+import { Image, StyleSheet, Platform, StatusBar } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import { Button } from "./Themed";
+import { Header, Left } from "native-base";
 
 type TabParamList = {
   TabHomeScreen: undefined;
@@ -34,6 +35,17 @@ const Avatar = (): JSX.Element => {
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const TabStack = createStackNavigator<TabParamList>();
 
+const styles = StyleSheet.create({
+  header: {
+    // paddingTop: 0,
+    ...Platform.select({
+      android: {
+        marginTop: StatusBar.currentHeight,
+      },
+    }),
+  },
+});
+
 function Navigator(props: Props): JSX.Element {
   const { name, component, title } = props;
   const colorScheme = useColorScheme();
@@ -43,6 +55,15 @@ function Navigator(props: Props): JSX.Element {
       <TabStack.Screen
         name={name}
         options={{
+          header: (props) => {
+            return (
+              <Header style={styles.header}>
+                <Left>
+                  <Button title="test" />
+                </Left>
+              </Header>
+            );
+          },
           // headerTitle: (props) => <Text>test</Text>,
           headerTitle: (props: any) => <Avatar {...props} />,
           headerRight: () => (
@@ -54,6 +75,7 @@ function Navigator(props: Props): JSX.Element {
           ),
           headerStyle: {
             backgroundColor: Colors[colorScheme].headerBGC,
+            padding: 200,
           },
           headerTintColor: Colors[colorScheme].text,
           headerTitleStyle: {
