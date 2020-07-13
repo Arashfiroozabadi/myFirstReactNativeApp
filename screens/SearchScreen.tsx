@@ -12,7 +12,7 @@ import {
   IconBase,
   InputBase,
 } from "../components/Themed";
-import { Header, Right, Item } from "native-base";
+import { Header, Right, Item, ListItem, CheckBox, Body } from "native-base";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
@@ -50,13 +50,36 @@ const styles = StyleSheet.create({
   },
 });
 
+interface SearchType {
+  q?: string;
+  type: { checked?: boolean; value?: string }[] | any;
+}
+
 function Search({
   navigation,
 }: StackScreenProps<RootStackParamList>): JSX.Element {
   const [isLoading, setisLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [SearchOption, setSearchOption] = useState<SearchType>({
+    q: "",
+    type: [
+      { value: "album", checked: true },
+      { value: "artist", checked: false },
+      { value: "playlist", checked: true },
+      { value: "track", checked: false },
+      { value: "show", checked: false },
+      { value: "episode", checked: false },
+    ],
+  });
 
   const dispatch = useDispatch();
+
+  const handleChange = (index: number) => () => {
+    const newArr = [...SearchOption.type];
+    newArr[index] = { ...newArr[index], checked: !newArr[index].checked };
+
+    setSearchOption({ type: newArr });
+  };
 
   useEffect(() => {
     const openModal = (): void => {
@@ -84,7 +107,7 @@ function Search({
     return () => {
       null;
     };
-  }, [modalVisible, dispatch, navigation]);
+  }, [modalVisible, dispatch, navigation, SearchOption.type]);
 
   if (isLoading) {
     return <AppLoading />;
@@ -108,7 +131,15 @@ function Search({
             <Text>Search Options</Text>
           </View>
           <View style={styles.modalBody}>
-            <Text>I'm Body</Text>
+            <Text>I&apos;m Body</Text>
+            {SearchOption.type.map((v, i) => (
+              <ListItem key={i}>
+                <CheckBox checked={v.checked} onPress={handleChange(i)} />
+                <Body>
+                  <Text>{v.value}</Text>
+                </Body>
+              </ListItem>
+            ))}
           </View>
           <View style={styles.modalClose}>
             <Button
