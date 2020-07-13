@@ -59,7 +59,7 @@ function Navigator(props: Props): JSX.Element {
             return (
               <Header style={styles.header}>
                 <Left>
-                  <Button title="test" />
+                  <Button onPress={() => null} title="test" />
                 </Left>
               </Header>
             );
