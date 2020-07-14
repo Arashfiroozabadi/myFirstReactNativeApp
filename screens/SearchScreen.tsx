@@ -1,8 +1,22 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { StyleSheet, Platform, Modal } from "react-native";
+import { StyleSheet, Platform, Modal, ScrollView, Image } from "react-native";
 import { AppLoading } from "expo";
 import { useDispatch } from "react-redux";
+import {
+  Header,
+  Right,
+  Item,
+  ListItem,
+  CheckBox,
+  Body,
+  Spinner,
+  Card,
+  CardItem,
+  Left,
+} from "native-base";
+import { StackScreenProps } from "@react-navigation/stack";
+import Axios from "axios";
 
 import {
   View,
@@ -12,8 +26,6 @@ import {
   IconBase,
   InputBase,
 } from "../components/Themed";
-import { Header, Right, Item, ListItem, CheckBox, Body } from "native-base";
-import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
 const styles = StyleSheet.create({
@@ -40,26 +52,52 @@ const styles = StyleSheet.create({
   },
   modalBody: {
     paddingHorizontal: 20,
-
-    height: 250,
+    // height: 250,
     // backgroundColor: "red",
   },
   modalClose: {
     paddingHorizontal: 10,
     marginTop: 20,
   },
+  list: {
+    paddingHorizontal: 10,
+  },
+  card: {
+    padding: 10,
+  },
+  cardBody: {
+    padding: 5,
+  },
+  cardHeader: {
+    paddingHorizontal: 10,
+  },
 });
 
 interface SearchType {
   q?: string;
-  type: { checked?: boolean; value?: string }[] | any;
+  type?: { checked?: boolean; value?: string }[] | any;
 }
-
+interface DataType {
+  artists: {
+    items: Array<{
+      id: string;
+      images: Array<{
+        height: number;
+        url: string;
+        width: number;
+      }>;
+      name: string;
+    }>;
+    total: string;
+  };
+}
 function Search({
   navigation,
 }: StackScreenProps<RootStackParamList>): JSX.Element {
   const [isLoading, setisLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [Data, setData] = useState<DataType>();
   const [SearchOption, setSearchOption] = useState<SearchType>({
     q: "",
     type: [
@@ -85,16 +123,37 @@ function Search({
     const openModal = (): void => {
       setModalVisible(!modalVisible);
     };
+    function handleChangeText(text: string): void {
+      setSearchOption({ ...SearchOption, q: text });
+    }
+
+    function handleSearch(): void {
+
+      const url = "https://spotify-data-list.herokuapp.com/search";
+      const query = SearchOption.q;
+      Axios.get(url, { params: { q: query, type: "artist" } })
+        .then((response) => {
+          console.log(response.data.artists);
+          setData(response.data);
+        })
+        .catch((e) => {
+          alert(e.message);
+          throw e;
+        });
+    }
     navigation.setOptions({
       header: () => {
         return (
           <Header transparent searchBar rounded style={styles.header}>
             <Right>
               <Item>
-                <BaseButton>
+                <BaseButton onPress={() => handleSearch()}>
                   <Text>Search</Text>
                 </BaseButton>
-                <InputBase placeholder="Search" />
+                <InputBase
+                  onChangeText={(text) => handleChangeText(text)}
+                  placeholder="Search"
+                />
                 <IconBase onPress={openModal} name="md-options" />
               </Item>
             </Right>
@@ -107,7 +166,7 @@ function Search({
     return () => {
       null;
     };
-  }, [modalVisible, dispatch, navigation, SearchOption.type]);
+  }, [modalVisible, dispatch, navigation, SearchOption.type, SearchOption]);
 
   if (isLoading) {
     return <AppLoading />;
@@ -151,13 +210,35 @@ function Search({
           </View>
         </View>
       </Modal>
-      <Button
-        title="test"
-        onPress={() => {
-          dispatch({ type: "dark" });
-          setModalVisible(!modalVisible);
-        }}
-      />
+      <View style={styles.list}>
+        <ScrollView>
+          <Text>{SearchOption.q}</Text>
+          {Data ? <Text>{Data.artists.total}</Text> : null}
+          <View>
+            {Data ? (
+              Data.artists.items.map((d) => (
+                <Card style={styles.card} key={d.id}>
+                  <View style={styles.cardHeader}>
+                    <Text>{d.name}</Text>
+                    <Text>ID: {d.id}</Text>
+                  </View>
+                  <View style={styles.cardBody}>
+                    <Image
+                      source={{ uri: d.images[0] ? d.images[0].url : "null" }}
+                      style={{
+                        height: 100,
+                        width: 100,
+                      }}
+                    />
+                  </View>
+                </Card>
+              ))
+            ) : (
+              <Spinner />
+            )}
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 }
