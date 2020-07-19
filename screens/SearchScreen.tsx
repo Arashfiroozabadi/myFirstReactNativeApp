@@ -71,11 +71,58 @@ const styles = StyleSheet.create({
   cardHeader: {
     paddingHorizontal: 10,
   },
+  boxContainer: {
+    height: 450,
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "row",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  // eslint-disable-next-line react-native/no-color-literals
+  box: {
+    margin: 8,
+    padding: 10,
+    display: "flex",
+    alignSelf: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "red",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+
+    elevation: 10,
+    borderRadius: 5,
+  },
+  boxOne: {
+    height: 300,
+    display: "flex",
+    justifyContent: "center",
+  },
+  boxTwo: {
+    height: 300,
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  boxThree: {
+    height: 300,
+    display: "flex",
+    justifyContent: "center",
+  },
 });
 
 interface SearchType {
   q?: string;
   type?: { checked?: boolean; value?: string }[] | any;
+}
+interface TypeMap {
+  checked: boolean;
+  value: string;
 }
 interface DataType {
   artists: {
@@ -102,13 +149,12 @@ function Search({
     q: "",
     type: [
       { value: "album", checked: true },
-      { value: "artist", checked: false },
+      { value: "artist", checked: true },
       { value: "playlist", checked: true },
       { value: "track", checked: false },
-      { value: "show", checked: false },
-      { value: "episode", checked: false },
     ],
   });
+  const [Query, setQuery] = useState("");
 
   const dispatch = useDispatch();
 
@@ -119,21 +165,38 @@ function Search({
     setSearchOption({ type: newArr });
   };
 
+  function queryHandle(
+    array: Array<{ checked: boolean; value: string }>
+  ): string[] {
+    const strings: string[] = [];
+    array.map((item) => {
+      if (item.checked) {
+        strings.push(item.value);
+      }
+    });
+
+    return strings;
+  }
+
   useEffect(() => {
     const openModal = (): void => {
       setModalVisible(!modalVisible);
     };
     function handleChangeText(text: string): void {
       setSearchOption({ ...SearchOption, q: text });
+      const t = "".concat(queryHandle(SearchOption.type));
+      setQuery(t);
     }
 
     function handleSearch(): void {
+      setisLoading(true);
 
       const url = "https://spotify-data-list.herokuapp.com/search";
       const query = SearchOption.q;
-      Axios.get(url, { params: { q: query, type: "artist" } })
+      Axios.get(url, { params: { q: query, type: Query } })
         .then((response) => {
-          console.log(response.data.artists);
+          setisLoading(false);
+
           setData(response.data);
         })
         .catch((e) => {
@@ -166,11 +229,15 @@ function Search({
     return () => {
       null;
     };
-  }, [modalVisible, dispatch, navigation, SearchOption.type, SearchOption]);
+  }, [
+    modalVisible,
+    dispatch,
+    navigation,
+    SearchOption.type,
+    SearchOption,
+    Query,
+  ]);
 
-  if (isLoading) {
-    return <AppLoading />;
-  }
   return (
     <View style={styles.container}>
       <Modal
@@ -191,7 +258,7 @@ function Search({
           </View>
           <View style={styles.modalBody}>
             <Text>I&apos;m Body</Text>
-            {SearchOption.type.map((v, i) => (
+            {SearchOption.type.map((v: TypeMap, i: number) => (
               <ListItem key={i}>
                 <CheckBox checked={v.checked} onPress={handleChange(i)} />
                 <Body>
@@ -210,6 +277,34 @@ function Search({
           </View>
         </View>
       </Modal>
+      <View style={styles.boxContainer}>
+        <View style={styles.boxOne}>
+          <View style={styles.box}>
+            <IconBase name="album" type="MaterialIcons" size={80} />
+            <Text>albums</Text>
+          </View>
+        </View>
+        <View style={styles.boxTwo}>
+          <View style={styles.box}>
+            <IconBase name="artist" type="MaterialCommunityIcons" size={80} />
+            <Text>artists</Text>
+          </View>
+          <View style={styles.box}>
+            <IconBase name="audiotrack" type="MaterialIcons" size={80} />
+            <Text>tracks</Text>
+          </View>
+        </View>
+        <View style={styles.boxThree}>
+          <View style={styles.box}>
+            <IconBase
+              name="playlist-music"
+              type="MaterialCommunityIcons"
+              size={80}
+            />
+            <Text>playlists</Text>
+          </View>
+        </View>
+      </View>
       <View style={styles.list}>
         <ScrollView>
           <Text>{SearchOption.q}</Text>
@@ -233,9 +328,9 @@ function Search({
                   </View>
                 </Card>
               ))
-            ) : (
+            ) : isLoading ? (
               <Spinner />
-            )}
+            ) : null}
           </View>
         </ScrollView>
       </View>
