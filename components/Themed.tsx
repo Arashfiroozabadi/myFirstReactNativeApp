@@ -31,6 +31,7 @@ export function useThemeColor(
 type ThemeProps = {
   darkColor?: string;
   lightColor?: string;
+  size?: number;
   theme?: string;
 };
 
@@ -81,6 +82,7 @@ export function IconBase(props: IconProps): JSX.Element {
     <DefaultIcon
       style={{
         color: Colors[colorScheme].icons,
+        fontSize: props.size || 24,
       }}
       {...props}
     />
