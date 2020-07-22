@@ -20,9 +20,6 @@ function TabOneScreen({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log("test");
-
     return () => {
       null;
     };
