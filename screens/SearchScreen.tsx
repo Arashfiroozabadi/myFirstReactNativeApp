@@ -28,94 +28,6 @@ import {
 } from "../components/Themed";
 import { RootStackParamList } from "../types";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    marginBottom: 10,
-    ...Platform.select({
-      android: {
-        // marginTop: StatusBar.currentHeight,
-      },
-    }),
-  },
-  modal: {
-    flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-  },
-  modalTitle: {
-    paddingHorizontal: 10,
-
-    marginTop: 65,
-  },
-  modalBody: {
-    paddingHorizontal: 20,
-    // height: 250,
-    // backgroundColor: "red",
-  },
-  modalClose: {
-    paddingHorizontal: 10,
-    marginTop: 20,
-  },
-  list: {
-    paddingHorizontal: 10,
-  },
-  card: {
-    padding: 10,
-  },
-  cardBody: {
-    padding: 5,
-  },
-  cardHeader: {
-    paddingHorizontal: 10,
-  },
-  boxContainer: {
-    height: 450,
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    alignContent: "center",
-    justifyContent: "center",
-  },
-  // eslint-disable-next-line react-native/no-color-literals
-  box: {
-    margin: 8,
-    padding: 10,
-    display: "flex",
-    alignSelf: "center",
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: "red",
-    shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-
-    elevation: 10,
-    borderRadius: 5,
-  },
-  boxOne: {
-    height: 300,
-    display: "flex",
-    justifyContent: "center",
-  },
-  boxTwo: {
-    height: 300,
-    display: "flex",
-    justifyContent: "space-around",
-  },
-  boxThree: {
-    height: 300,
-    display: "flex",
-    justifyContent: "center",
-  },
-});
-
 interface SearchType {
   q?: string;
   type?: { checked?: boolean; value?: string }[] | any;
@@ -280,23 +192,39 @@ function Search({
       <View style={styles.boxContainer}>
         <View style={styles.boxOne}>
           <View style={styles.box}>
-            <IconBase name="album" type="MaterialIcons" size={80} />
+            <IconBase
+              onPress={() => navigation.navigate("album")}
+              name="album"
+              type="MaterialIcons"
+              size={80}
+            />
             <Text>albums</Text>
           </View>
         </View>
         <View style={styles.boxTwo}>
           <View style={styles.box}>
-            <IconBase name="artist" type="MaterialCommunityIcons" size={80} />
+            <IconBase
+              onPress={() => navigation.navigate("artist")}
+              name="artist"
+              type="MaterialCommunityIcons"
+              size={80}
+            />
             <Text>artists</Text>
           </View>
           <View style={styles.box}>
-            <IconBase name="audiotrack" type="MaterialIcons" size={80} />
+            <IconBase
+              onPress={() => navigation.navigate("track")}
+              name="audiotrack"
+              type="MaterialIcons"
+              size={80}
+            />
             <Text>tracks</Text>
           </View>
         </View>
         <View style={styles.boxThree}>
           <View style={styles.box}>
             <IconBase
+              onPress={() => navigation.navigate("playlist")}
               name="playlist-music"
               type="MaterialCommunityIcons"
               size={80}
@@ -339,3 +267,91 @@ function Search({
 }
 
 export default Search;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    marginBottom: 10,
+    ...Platform.select({
+      android: {
+        // marginTop: StatusBar.currentHeight,
+      },
+    }),
+  },
+  modal: {
+    flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
+  },
+  modalTitle: {
+    paddingHorizontal: 10,
+
+    marginTop: 65,
+  },
+  modalBody: {
+    paddingHorizontal: 20,
+    // height: 250,
+    // backgroundColor: "red",
+  },
+  modalClose: {
+    paddingHorizontal: 10,
+    marginTop: 20,
+  },
+  list: {
+    paddingHorizontal: 10,
+  },
+  card: {
+    padding: 10,
+  },
+  cardBody: {
+    padding: 5,
+  },
+  cardHeader: {
+    paddingHorizontal: 10,
+  },
+  boxContainer: {
+    height: 450,
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "row",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  // eslint-disable-next-line react-native/no-color-literals
+  box: {
+    margin: 8,
+    padding: 10,
+    display: "flex",
+    alignSelf: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "red",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+
+    elevation: 10,
+    borderRadius: 5,
+  },
+  boxOne: {
+    height: 300,
+    display: "flex",
+    justifyContent: "center",
+  },
+  boxTwo: {
+    height: 300,
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  boxThree: {
+    height: 300,
+    display: "flex",
+    justifyContent: "center",
+  },
+});
