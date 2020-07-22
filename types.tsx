@@ -1,6 +1,11 @@
 export type RootStackParamList = {
+  album: undefined;
+  artist: undefined;
   NotFound: undefined;
+  playlist: undefined;
   Root: undefined;
+  TabSearchScreen: undefined;
+  track: undefined;
 };
 
 export type BottomTabParamList = {

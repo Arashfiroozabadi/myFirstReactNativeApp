@@ -19,6 +19,10 @@ export default {
           Search: {
             screens: {
               TabSearchScreen: "search",
+              album: "album",
+              artist: "artist",
+              playlist: "playlist",
+              track: "track",
             },
           },
         },

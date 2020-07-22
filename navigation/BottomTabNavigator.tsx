@@ -1,6 +1,8 @@
 import * as React from "react";
-import { Image } from "react-native";
+import { Image, Button, StyleSheet, Platform, StatusBar } from "react-native";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -8,9 +10,14 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
-import { BottomTabParamList } from "../types";
+import { BottomTabParamList, RootStackParamList } from "../types";
 import { Navigator } from "../components";
 import Search from "../screens/SearchScreen";
+import { View, Text } from "../components/Themed";
+import { Left, Header, Right } from "native-base";
+import SubSearch from "../screens/SubSearch";
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -26,10 +33,26 @@ const NavigatorTwo = (): JSX.Element => {
   return <Navigator name="TabProfileScreen" component={TabTwoScreen} />;
 };
 
-const NavigatorSearch = (): JSX.Element => {
-  // const count = useSelector((state: any) => state.count);
-  return <Navigator name="TabSearchScreen" component={Search} />;
+const Album = (): JSX.Element => {
+  return <SubSearch type="artist" />;
 };
+
+function NavigatorSearch(): JSX.Element {
+  return (
+    <Stack.Navigator initialRouteName="TabSearchScreen">
+      <Stack.Screen name="TabSearchScreen" component={Search} />
+      <Stack.Screen name="album" component={Album} />
+      <Stack.Screen name="artist" component={SubSearch} />
+      <Stack.Screen name="playlist" component={SubSearch} />
+      <Stack.Screen name="track" component={SubSearch} />
+    </Stack.Navigator>
+  );
+}
+
+// const NavigatorSearch = (): JSX.Element => {
+//   // const count = useSelector((state: any) => state.count);
+//   return <Navigator name="TabSearchScreen" component={Search} />;
+// };
 
 export default function BottomTabNavigator(): JSX.Element {
   const colorScheme = useColorScheme();
